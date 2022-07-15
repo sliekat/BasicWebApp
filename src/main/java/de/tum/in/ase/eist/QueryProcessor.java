@@ -2,6 +2,11 @@ package de.tum.in.ase.eist;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class QueryProcessor {
 
@@ -13,7 +18,21 @@ public class QueryProcessor {
                     "writer in the English language and the world's pre-eminent dramatist.";
         } else if (query.contains("name")) {
            return "kat";
-        } else { // TODO extend the programm here
+
+        }else if (query.contains("plus")){
+            Pattern intPattern = Pattern.compile("-?\\d+");
+            Matcher matcher = intPattern.matcher(query);
+
+            List<String> integerList = new ArrayList<>();
+            while (matcher.find()) {
+                integerList.add(matcher.group());
+            }
+
+            String res = integerList.get(0) + integerList.get(1);
+            return res;
+
+        }
+        else {
             return "";
         }
     }
