@@ -3,6 +3,7 @@ package de.tum.in.ase.eist;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +21,7 @@ public class QueryProcessor {
            return "kat";
 
         }else if (query.contains("plus")){
+            query = query.substring(9);
             Pattern intPattern = Pattern.compile("-?\\d+");
             Matcher matcher = intPattern.matcher(query);
 
@@ -31,10 +33,24 @@ public class QueryProcessor {
             String res = integerList.get(0) + integerList.get(1);
             return res;
 
+        }else if(query.contains("largest")){
+            query = query.substring(9);
+            Pattern intPattern = Pattern.compile("-?\\d+");
+            Matcher matcher = intPattern.matcher(query);
+
+            List<String> integerList = new ArrayList<>();
+            while (matcher.find()) {
+                integerList.add(matcher.group());
+            }
+
+            integerList.stream().map(x -> Integer.getInteger(x)).toList();
+            integerList.sort(Comparator.reverseOrder());
+            return integerList.get(0);
         }
         else {
             return "";
         }
     }
 }
+
 
